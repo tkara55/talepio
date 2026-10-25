@@ -1,0 +1,73 @@
+<% content_for :title, "##{@ticket.id} #{@ticket.subject}" %>
+
+<p><%= link_to "← Kuyruk", tickets_path, class: "muted" %></p>
+
+<div class="ticket-head">
+  <div>
+    <p class="muted">#<%= @ticket.id %> · <%= @ticket.requester_name %> &lt;<%= @ticket.requester_email %>&gt; · <%= time_label(@ticket.created_at) %></p>
+    <h1><%= @ticket.subject %></h1>
+  </div>
+  <div class="head-badges"><%= priority_badge(@ticket.priority) %> <%= status_badge(@ticket.status) %></div>
+</div>
+
+<div class="layout">
+  <div>
+    <%= render "conversation", ticket: @ticket %>
+
+    <% if @ticket.status == "closed" %>
+      <p class="muted">Talep kapandı; yanıt yazılamaz.</p>
+    <% else %>
+      <%= form_with scope: :reply, url: ticket_replies_path(@ticket), class: "form panel" do |f| %>
+        <label>Yanıt <%= f.text_area :body, rows: 5, required: true %></label>
+        <div class="actions">
+          <% (%w[open pending solved] & ([@ticket.status] + @ticket.allowed_transitions)).each do |s| %>
+            <%= button_tag "Gönder · #{ApplicationHelper::STATUS_LABELS[s]}", name: "status", value: s,
+                  class: "button #{'button-secondary' unless s == 'solved'}" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <aside class="side">
+    <h2>İlk yanıt SLA</h2>
+    <p><%= sla_chip(@ticket, @now) %></p>
+    <dl class="facts">
+      <dt>Hedef</dt><dd><%= duration_label(SlaPolicy.target_for(@ticket.priority)) %></dd>
+      <dt>Son tarih</dt><dd><%= time_label(@ticket.first_response_due_at) %></dd>
+      <dt>İlk yanıt</dt><dd><%= time_label(@ticket.first_responded_at) %></dd>
+      <% if @ticket.solved_at %>
+        <dt>Otomatik kapanış</dt><dd><%= time_label(@ticket.solved_at + Ticket::AUTO_CLOSE_AFTER) %></dd>
+      <% end %>
+    </dl>
+
+    <% if @ticket.sla_events.any? %>
+      <ul class="events">
+        <% @ticket.sla_events.each do |e| %>
+          <li class="event event-<%= e.kind %>">
+            <strong><%= e.kind == "warning" ? "Uyarı" : "İhlal" %></strong>
+            <span class="muted"><%= time_label(e.created_at) %></span>
+            <% if e.note %><em><%= e.note %></em><% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <h2>Atanan</h2>
+    <%= form_with url: ticket_assignment_path(@ticket), method: :patch, class: "inline-form" do |f| %>
+      <%= f.select :assignee_id, options_from_collection_for_select(@agents, :id, :name, @ticket.assignee_id), include_blank: "— Atanmamış —" %>
+      <%= f.submit "Kaydet", class: "button button-secondary" %>
+    <% end %>
+
+    <h2>Durum</h2>
+    <% if @ticket.allowed_transitions.any? %>
+      <div class="actions">
+        <% @ticket.allowed_transitions.each do |s| %>
+          <%= button_to "→ #{ApplicationHelper::STATUS_LABELS[s]}", ticket_transitions_path(@ticket, status: s), class: "button button-ghost" %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="muted">Kapandı: başka geçiş yok.</p>
+    <% end %>
+  </aside>
+</div>

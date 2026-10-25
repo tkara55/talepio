@@ -1,0 +1,165 @@
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #1f2333;
+  --muted: #6b7088;
+  --line: #e3e5ee;
+  --brand: #4f46e5;
+  --brand-2: #0d9488;
+  --ok: #15803d;
+  --ok-bg: #e7f6ec;
+  --warn: #b45309;
+  --warn-bg: #fff4e0;
+  --bad: #b91c1c;
+  --bad-bg: #fde8e8;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 { font-size: 1.6rem; margin: .2rem 0 1rem; }
+h2 { font-size: 1rem; margin: 1.4rem 0 .6rem; }
+code { background: var(--line); padding: 0 .3em; border-radius: 4px; }
+
+.container { max-width: 1180px; margin: 0 auto; padding: 24px 16px 48px; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+
+/* Üst çubuk */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; color: var(--text); }
+.brand:hover { text-decoration: none; }
+.topbar nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.who { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+.avatar {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; font-size: .75rem; font-weight: 700;
+}
+.link-button { background: none; border: 0; color: var(--brand); cursor: pointer; font: inherit; padding: 0; }
+.footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 24px; }
+
+/* Butonlar ve formlar */
+.button {
+  display: inline-block; border: 0; border-radius: 8px; padding: .55rem 1rem; cursor: pointer;
+  background: var(--brand); color: #fff; font: inherit; font-weight: 600;
+}
+.button:hover { filter: brightness(1.08); text-decoration: none; }
+.button-secondary { background: #e9e8fd; color: var(--brand); }
+.button-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--line); font-weight: 500; width: 100%; text-align: left; margin-bottom: 6px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.actions .button-ghost { width: auto; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin: 16px 0; }
+.form label { display: block; font-weight: 600; margin-bottom: 12px; }
+.form input[type=text], .form input[type=email], .form select, .form textarea, .inline-form select {
+  display: block; width: 100%; margin-top: 4px; padding: .5rem .6rem; font: inherit;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff;
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.inline-form { display: flex; gap: 8px; }
+.inline-form select { margin: 0; }
+
+.flash { padding: .6rem .9rem; border-radius: 8px; margin: 0 0 16px; }
+.flash ul { margin: .3rem 0 0; }
+.flash-notice { background: var(--ok-bg); color: var(--ok); }
+.flash-alert { background: var(--bad-bg); color: var(--bad); }
+
+/* Karşılama */
+.hero { text-align: center; padding: 32px 0 8px; }
+.hero h1 { font-size: 2.2rem; margin: .4rem 0; }
+.lead { max-width: 620px; margin: 0 auto; color: var(--muted); font-size: 1.05rem; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.card h2 { margin-top: 0; font-size: 1.15rem; }
+
+/* Rozetler */
+.badge { display: inline-block; padding: .1rem .55rem; border-radius: 999px; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+.status-new { background: #fff4e0; color: #b45309; }
+.status-open { background: #fde8e8; color: #b91c1c; }
+.status-pending { background: #e0ecff; color: #1d4ed8; }
+.status-solved { background: #e7f6ec; color: #15803d; }
+.status-closed { background: #eceef3; color: #4b5068; }
+.priority-urgent { background: #b91c1c; color: #fff; }
+.priority-high { background: #fde8e8; color: #b91c1c; }
+.priority-normal { background: #eceef3; color: #4b5068; }
+.priority-low { background: #f3f4f8; color: #6b7088; }
+.tag { font-size: .7rem; background: #e9e8fd; color: var(--brand); padding: 0 .4rem; border-radius: 4px; }
+
+.sla { display: inline-flex; gap: 6px; align-items: center; padding: .15rem .55rem; border-radius: 6px; font-size: .82rem; font-weight: 600; white-space: nowrap; }
+.sla-time { font-variant-numeric: tabular-nums; }
+.sla-on_track, .sla-met { background: var(--ok-bg); color: var(--ok); }
+.sla-at_risk { background: var(--warn-bg); color: var(--warn); }
+.sla-breached, .sla-missed { background: var(--bad-bg); color: var(--bad); }
+.sla-none { background: #eceef3; color: var(--muted); }
+
+/* Radar şeridi */
+.radar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 8px; }
+.radar-cell { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; color: var(--muted); font-weight: 600; }
+.radar-cell span { display: block; font-size: 1.8rem; font-weight: 800; }
+.radar-breached span { color: var(--bad); }
+.radar-at_risk span { color: var(--warn); }
+.radar-on_track span { color: var(--ok); }
+.radar-note { grid-column: 1 / -1; margin: 0; font-size: .8rem; color: var(--muted); }
+
+/* Kuyruk */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; margin: 16px 0 8px; }
+.tabs a { padding: .35rem .8rem; border-radius: 8px; color: var(--muted); }
+.tabs a.active { background: var(--surface); color: var(--text); border: 1px solid var(--line); font-weight: 600; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.queue { width: 100%; border-collapse: collapse; }
+.queue th, .queue td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.queue th { font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
+.queue tr:last-child td { border-bottom: 0; }
+.empty { text-align: center; padding: 24px; }
+
+.side { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 16px 16px; }
+.events { list-style: none; padding: 0; margin: 0; }
+.event { border-left: 3px solid var(--line); padding: 4px 0 4px 10px; margin-bottom: 10px; font-size: .88rem; }
+.event span, .event em { display: block; }
+.event em { color: var(--brand-2); font-size: .8rem; }
+.event-warning { border-color: var(--warn); }
+.event-breach { border-color: var(--bad); }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .9rem; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+/* Talep sayfası */
+.ticket-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.ticket-head p { margin: 0; }
+.head-badges { display: flex; gap: 6px; }
+.steps { display: flex; list-style: none; padding: 0; margin: 0 0 8px; gap: 4px; flex-wrap: wrap; }
+.steps li { padding: .25rem .7rem; border-radius: 999px; background: #eceef3; color: var(--muted); font-size: .85rem; }
+.steps li.current { background: var(--brand); color: #fff; font-weight: 600; }
+.conversation { display: flex; flex-direction: column; gap: 12px; }
+.message { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; }
+.message header { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+.message p { margin: .3rem 0; }
+.message-agent { border-left: 4px solid var(--brand); }
+.message-requester { border-left: 4px solid #c9cbd8; }
+
+.agent-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.agent-list form { margin: 0; }
+.agent-pick {
+  display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; font: inherit;
+}
+.agent-pick:hover { border-color: var(--brand); }
+
+@media (max-width: 820px) {
+  .layout, .cards, .row { grid-template-columns: 1fr; }
+  .radar-cell span { font-size: 1.4rem; }
+  .ticket-head { flex-direction: column; }
+}

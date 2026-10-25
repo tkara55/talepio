@@ -1,0 +1,16 @@
+<% content_for :title, "Temsilci girişi" %>
+
+<h1>Temsilci girişi</h1>
+<p class="muted">Demo sürümü: şifre yok, bir temsilci seçin.</p>
+
+<div class="agent-list">
+  <% @agents.each do |agent| %>
+    <%= button_to session_path(agent_id: agent.id), class: "agent-pick" do %>
+      <span class="avatar"><%= agent.initials %></span>
+      <span><strong><%= agent.name %></strong><br><span class="muted"><%= agent.email %></span></span>
+    <% end %>
+  <% end %>
+</div>
+<% if @agents.empty? %>
+  <p class="flash flash-alert">Henüz temsilci yok. <code>bin/rails db:seed</code> çalıştırın.</p>
+<% end %>

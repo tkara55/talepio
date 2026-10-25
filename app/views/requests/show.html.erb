@@ -1,0 +1,37 @@
+<% content_for :title, "Talep ##{@ticket.id}" %>
+
+<div class="ticket-head">
+  <div>
+    <p class="muted">Talep #<%= @ticket.id %> · <%= time_label(@ticket.created_at) %></p>
+    <h1><%= @ticket.subject %></h1>
+  </div>
+  <%= status_badge(@ticket.status) %>
+</div>
+
+<ol class="steps">
+  <% %w[new open pending solved closed].each do |s| %>
+    <li class="<%= 'current' if s == @ticket.status %>"><%= ApplicationHelper::STATUS_LABELS[s] %></li>
+  <% end %>
+</ol>
+
+<p class="panel muted">
+  <% if @ticket.first_responded_at %>
+    İlk yanıt <%= time_label(@ticket.first_responded_at) %> tarihinde verildi.
+  <% elsif @ticket.active? %>
+    Ekibimiz en geç <strong><%= time_label(@ticket.first_response_due_at) %></strong> tarihine kadar ilk yanıtı verecek.
+  <% end %>
+  <% if @ticket.status == "solved" %>
+    Talebiniz çözüldü olarak işaretlendi. <%= duration_label(Ticket::AUTO_CLOSE_AFTER) %> içinde yazmazsanız otomatik kapanır; yazarsanız yeniden açılır.
+  <% end %>
+</p>
+
+<%= render "tickets/conversation", ticket: @ticket %>
+
+<% if @ticket.status == "closed" %>
+  <p class="muted">Bu talep kapandı. Yeni bir sorun için <%= link_to "yeni talep açın", new_request_path %>.</p>
+<% else %>
+  <%= form_with scope: :reply, url: request_reply_path(@ticket.token), class: "form panel" do |f| %>
+    <label>Mesajınız <%= f.text_area :body, rows: 4, required: true %></label>
+    <%= f.submit "Gönder", class: "button" %>
+  <% end %>
+<% end %>

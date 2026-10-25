@@ -1,0 +1,9 @@
+development:
+  adapter: async
+
+test:
+  adapter: test
+
+# Talepio does not push over websockets; queue pages refresh themselves.
+production:
+  adapter: async

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <title><%= content_for(:title) ? "#{content_for(:title)} · Talepio" : "Talepio" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="application-name" content="Talepio">
+    <meta name="turbo-refresh-method" content="morph">
+    <meta name="turbo-refresh-scroll" content="preserve">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <%= link_to root_path, class: "brand" do %>
+        <img src="/icon.svg" alt="" width="32" height="32">
+        <span>Talepio</span>
+      <% end %>
+      <nav>
+        <% if current_agent %>
+          <%= link_to "Kuyruk", tickets_path %>
+          <span class="who"><span class="avatar"><%= current_agent.initials %></span><%= current_agent.name %></span>
+          <%= button_to "Çıkış", session_path, method: :delete, class: "link-button" %>
+        <% else %>
+          <%= link_to "Talep aç", new_request_path %>
+          <%= link_to "Temsilci girişi", new_session_path %>
+        <% end %>
+      </nav>
+    </header>
+
+    <main class="container">
+      <% if notice %><p class="flash flash-notice"><%= notice %></p><% end %>
+      <% if alert %><p class="flash flash-alert"><%= alert %></p><% end %>
+      <%= yield %>
+    </main>
+
+    <footer class="footer">Talepio · SLA radarlı destek masası · ders projesi</footer>
+  </body>
+</html>

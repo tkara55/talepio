@@ -1,0 +1,16 @@
+<div class="conversation">
+  <article class="message message-requester">
+    <header><strong><%= ticket.requester_name %></strong> <span class="muted"><%= time_label(ticket.created_at) %></span></header>
+    <%= simple_format(ticket.description) %>
+  </article>
+  <% ticket.comments.each do |comment| %>
+    <article class="message <%= comment.from_agent? ? 'message-agent' : 'message-requester' %>">
+      <header>
+        <strong><%= comment.author_name %></strong>
+        <% if comment.from_agent? %><span class="tag">Destek</span><% end %>
+        <span class="muted"><%= time_label(comment.created_at) %></span>
+      </header>
+      <%= simple_format(comment.body) %>
+    </article>
+  <% end %>
+</div>

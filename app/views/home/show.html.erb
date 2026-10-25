@@ -1,0 +1,18 @@
+<section class="hero">
+  <img src="/icon.svg" alt="Talepio logosu" width="72" height="72">
+  <h1>Talepio</h1>
+  <p class="lead">Müşteri talebi gelir, atanır, yanıtlanır, çözülür. SLA'ya kalan süre saniye saniye izlenir ve bir talep riske girdiği dakikada radar devreye girer.</p>
+</section>
+
+<div class="cards">
+  <div class="card">
+    <h2>Müşteriyim</h2>
+    <p>Sorununuzu iletin. Size özel bir takip bağlantısı verilir; giriş gerekmez.</p>
+    <%= link_to "Talep oluştur", new_request_path, class: "button" %>
+  </div>
+  <div class="card">
+    <h2>Destek temsilcisiyim</h2>
+    <p>Kuyruğu son tarihe göre sıralı görün, talepleri üstlenin, yanıtlayın ve çözün.</p>
+    <%= link_to "Temsilci girişi", new_session_path, class: "button button-secondary" %>
+  </div>
+</div>

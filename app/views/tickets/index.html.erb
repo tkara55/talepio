@@ -1,0 +1,67 @@
+<% content_for :title, "Kuyruk" %>
+
+<div data-controller="auto-refresh" data-auto-refresh-seconds-value="30">
+  <section class="radar" aria-label="SLA radarı">
+    <div class="radar-cell radar-breached"><span><%= @radar[:breached].to_i %></span>İhlal</div>
+    <div class="radar-cell radar-at_risk"><span><%= @radar[:at_risk].to_i %></span>Riskte</div>
+    <div class="radar-cell radar-on_track"><span><%= @radar[:on_track].to_i %></span>Süre var</div>
+    <p class="radar-note">Radar <%= l(@now, format: "%H:%M:%S") %> itibarıyla tarandı · 30 sn'de bir yenilenir · ilk yanıt bekleyen talepler</p>
+  </section>
+
+  <div class="layout">
+    <div>
+      <nav class="tabs">
+        <% TicketsController::VIEWS.each do |key, label| %>
+          <%= link_to label, tickets_path(view: key), class: ("active" if key == @view) %>
+        <% end %>
+      </nav>
+
+      <div class="table-wrap">
+        <table class="queue">
+          <thead>
+            <tr><th>#</th><th>Konu</th><th>Öncelik</th><th>Durum</th><th>Atanan</th><th>İlk yanıt SLA</th></tr>
+          </thead>
+          <tbody>
+            <% @tickets.each do |t| %>
+              <tr>
+                <td class="muted"><%= t.id %></td>
+                <td><%= link_to t.subject, ticket_path(t) %><br><span class="muted"><%= t.requester_name %></span></td>
+                <td><%= priority_badge(t.priority) %></td>
+                <td><%= status_badge(t.status) %></td>
+                <td><%= t.assignee&.name || tag.span("—", class: "muted") %></td>
+                <td><%= sla_chip(t, @now) %></td>
+              </tr>
+            <% end %>
+            <% if @tickets.empty? %>
+              <tr><td colspan="6" class="muted empty">Bu görünümde talep yok.</td></tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside class="side">
+      <h2>Radar olayları</h2>
+      <ul class="events">
+        <% @events.each do |e| %>
+          <li class="event event-<%= e.kind %>">
+            <strong><%= e.kind == "warning" ? "Uyarı" : "İhlal" %></strong>
+            <%= link_to "##{e.ticket_id} #{e.ticket.subject.truncate(32)}", ticket_path(e.ticket_id) %>
+            <span class="muted">
+              <%= l(e.created_at, format: "%H:%M:%S") %> ·
+              <%= e.minutes_remaining.positive? ? "ihlale #{e.minutes_remaining} dk kala" : "son tarihten #{-e.minutes_remaining} dk sonra" %>
+            </span>
+            <% if e.note %><em><%= e.note %></em><% end %>
+          </li>
+        <% end %>
+        <% if @events.empty? %><li class="muted">Henüz olay yok.</li><% end %>
+      </ul>
+
+      <h2>Demo senaryoları</h2>
+      <p class="muted small">Zaman kurallarını beklemeden göstermek için geçmiş tarihli talep oluşturur.</p>
+      <% DemoScenariosController::SCENARIOS.each do |key, label| %>
+        <%= button_to label, demo_scenarios_path(id: key), class: "button button-ghost" %>
+      <% end %>
+    </aside>
+  </div>
+</div>
