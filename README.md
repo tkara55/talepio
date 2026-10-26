@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/tkara55/talepio/actions/workflows/ci.yml/badge.svg)](https://github.com/tkara55/talepio/actions/workflows/ci.yml)
 
-- **Canlı uygulama:** _deploy sonrası eklenecek_
+- **Canlı uygulama:** https://talepio-bftw.onrender.com (Render ücretsiz planı: uzun süre boşta kalınca ilk açılış ~50 sn sürebilir)
 - **İlham kaynağı:** Zendesk Support. Uygulamada Zendesk adı ve logosu kullanılmaz; Talepio adı ve logosu bu proje için yapıldı.
 - **Teknoloji:** Ruby 3.4, Rails 8.1, Hotwire (Turbo + Stimulus). Geliştirme ve testte SQLite, Render'da PostgreSQL.
 
@@ -132,7 +132,7 @@ bin/rails db:prepare db:seed
 bin/rails server
 ```
 
-**Render:** Repodaki [`render.yaml`](render.yaml) dosyası Blueprint olarak tanımlı: bir Docker web servisi ve ücretsiz PostgreSQL. Container açılırken `db:prepare` ve `db:seed` çalışır ([`bin/docker-entrypoint`](bin/docker-entrypoint)). `SLA_RADAR_TICKER=1` ortam değişkeni dakikalık radarı açar.
+**Render:** Repodaki [`render.yaml`](render.yaml) dosyası Blueprint olarak tanımlı: bir Docker web servisi ve ücretsiz PostgreSQL. Container açılırken `db:prepare` ve `db:seed` çalışır ([`bin/docker-entrypoint`](bin/docker-entrypoint)). `SLA_RADAR_TICKER=1` ortam değişkeni dakikalık radarı açar. Blueprint, Render'a public repo URL'siyle bağlandı. Bu yüzden push'lar otomatik deploy edilmez; yeni bir kod sürümü için Render panelinden *Manual Deploy* yapılır.
 
 ## 9. Yapamadıklarım
 
